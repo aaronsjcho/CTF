@@ -41,4 +41,6 @@ We can implement [`addrof`](./pwn.js#L68) primitive by defining `oob_arr` and `o
 
 > [Escaping V8 Sandbox via Turbofan JIT Spraying: Part 1 (Chromium < 100.0.4896.60)](https://aaronsjcho.github.io/Escaping-V8-Sandbox-via-Turbofan-JIT-Spraying-Part-1/)
 
+You have to install `/bin/xcalc` via `sudo apt install -y x11-apps` before running `pwn.js` if you are using WSL.
+
 ![](img/4.png)
