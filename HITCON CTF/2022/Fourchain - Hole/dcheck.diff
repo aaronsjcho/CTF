@@ -1,0 +1,79 @@
+diff --git a/src/builtins/builtins-collections-gen.cc b/src/builtins/builtins-collections-gen.cc
+index bf8d735a0c7..32469186336 100644
+--- a/src/builtins/builtins-collections-gen.cc
++++ b/src/builtins/builtins-collections-gen.cc
+@@ -702,6 +702,7 @@ void CollectionsBuiltinsAssembler::FindOrderedHashTableEntry(
+            not_found);
+ 
+     // Make sure the entry index is within range.
++    /*
+     CSA_DCHECK(
+         this,
+         UintPtrLessThan(
+@@ -711,6 +712,7 @@ void CollectionsBuiltinsAssembler::FindOrderedHashTableEntry(
+                     table, CollectionType::NumberOfElementsIndex())),
+                 CAST(UnsafeLoadFixedArrayElement(
+                     table, CollectionType::NumberOfDeletedElementsIndex()))))));
++    */
+ 
+     // Compute the index of the entry relative to kHashTableStartIndex.
+     entry_start =
+diff --git a/src/codegen/code-stub-assembler.cc b/src/codegen/code-stub-assembler.cc
+index 19a7cf85f0f..a91883b3b58 100644
+--- a/src/codegen/code-stub-assembler.cc
++++ b/src/codegen/code-stub-assembler.cc
+@@ -2364,10 +2364,12 @@ void CodeStubAssembler::FixedArrayBoundsCheck(TNode<FixedArrayBase> array,
+   if (!v8_flags.fixed_array_bounds_checks) return;
+   DCHECK(IsAligned(additional_offset, kTaggedSize));
+   // IntPtrAdd does constant-folding automatically.
++  /*
+   TNode<IntPtrT> effective_index =
+       IntPtrAdd(index, IntPtrConstant(additional_offset / kTaggedSize));
+   CSA_CHECK(this, UintPtrLessThan(effective_index,
+                                   LoadAndUntagFixedArrayBaseLength(array)));
++  */
+ }
+ 
+ TNode<Object> CodeStubAssembler::LoadPropertyArrayElement(
+@@ -2738,9 +2740,11 @@ TNode<Float64T> CodeStubAssembler::LoadFixedDoubleArrayElement(
+   int32_t header_size = FixedDoubleArray::kHeaderSize - kHeapObjectTag;
+   TNode<IntPtrT> offset =
+       ElementOffsetFromIndex(index, HOLEY_DOUBLE_ELEMENTS, header_size);
++  /*
+   CSA_DCHECK(this, IsOffsetInBounds(
+                        offset, LoadAndUntagFixedArrayBaseLength(object),
+                        FixedDoubleArray::kHeaderSize, HOLEY_DOUBLE_ELEMENTS));
++  */
+   return LoadDoubleWithHoleCheck(object, offset, if_hole, machine_type);
+ }
+ 
+@@ -3185,6 +3189,7 @@ void CodeStubAssembler::StoreFixedArrayOrPropertyArrayElement(
+                 static_cast<int>(PropertyArray::kLengthAndHashOffset));
+   // Check that index_node + additional_offset <= object.length.
+   // TODO(cbruni): Use proper LoadXXLength helpers
++  /*
+   CSA_DCHECK(
+       this,
+       IsOffsetInBounds(
+@@ -3202,6 +3207,7 @@ void CodeStubAssembler::StoreFixedArrayOrPropertyArrayElement(
+                                                FixedArrayBase::kLengthOffset);
+               }),
+           FixedArray::kHeaderSize));
++  */
+   if (barrier_mode == SKIP_WRITE_BARRIER) {
+     StoreNoWriteBarrier(MachineRepresentation::kTagged, object, offset, value);
+   } else if (barrier_mode == UNSAFE_SKIP_WRITE_BARRIER) {
+diff --git a/src/objects/ordered-hash-table.cc b/src/objects/ordered-hash-table.cc
+index ee720e56089..264de8976c5 100644
+--- a/src/objects/ordered-hash-table.cc
++++ b/src/objects/ordered-hash-table.cc
+@@ -299,7 +299,9 @@ MaybeHandle<Derived> OrderedHashTable<Derived, entrysize>::Rehash(
+     ++new_entry;
+   }
+ 
++  /*
+   DCHECK_EQ(table->NumberOfDeletedElements(), removed_holes_index);
++  */
+ 
+   new_table->SetNumberOfElements(table->NumberOfElements());
+   if (table->NumberOfBuckets() > 0) {
