@@ -1,0 +1,15 @@
+Baby WASM
+
+This is a JS engine pwn challenge.
+V8 version: 8.7.220
+V8 commit: 0d81cd72688512abcbe1601015baee390c484a6a
+glibc version: 2.31
+OS: Ubuntu 20.04.2 - 64 bit
+
+Provided challenge files: V8 debug and release builds, diff and patch files, challenge setup files, libc.so.6
+
+The server will be running the release build.
+
+Note: My intended solution is not only about 90% reliable so if you are sure it has worked locally, in debug or release, but cannot get it to work remotely, please try to run your exploit many more times. Please talk to me if you think there is an issue.
+
+Author: @fpasswd on Discord, @flyingpassword on Twitter
