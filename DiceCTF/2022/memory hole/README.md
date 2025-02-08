@@ -35,12 +35,12 @@ However, [`ArrayPrototypeSetLength()`](./attachment/bin/patch.patch#L44) doesn't
 
 ### Implement exploitation primitives
 
-We can implement [`addrof`](./pwn.js#L68) primitive by defining `oob_arr` and `obj_arr` consecutively in a function and accessing to `obj_arr` using OOB. Then we can get the address of object in `obj_arr[0]` as a float number. We can also implement sandboxed [AAR](./pwn.js#L74)/[AAW](./pwn.js#L80) primitives by defining `oob_arr` and `typed_arr` consecutively and overwriting `data_ptr` of `typed_arr` using OOB.
+We can implement [`addrof`](./pwn.js#L68) primitive by defining `oob_arr` and `obj_arr` consecutively in a function and accessing to `obj_arr` using OOB. Then we can get the address of object in `obj_arr[0]` as a float number. We can also implement sandboxed [AAR](./pwn.js#L74)/[AAW](./pwn.js#L80) primitives by defining `oob_arr` and `typed_arr` consecutively and overwriting `base_pointer` of `typed_arr` using OOB.
 
 ### Escape V8 sandbox to get RCE
 
 > [Escaping V8 Sandbox via Turbofan JIT Spraying: Part 1 (Chromium < 100.0.4896.60)](https://aaronsjcho.github.io/Escaping-V8-Sandbox-via-Turbofan-JIT-Spraying-Part-1/)
 
-You have to install `/bin/xcalc` via `sudo apt install -y x11-apps` before running `pwn.js` if you are using WSL.
+You have to install `/bin/xcalc` via `sudo apt install -y x11-apps` before running [`pwn.js`](./pwn.js) if you are using WSL.
 
 ![](img/4.png)
